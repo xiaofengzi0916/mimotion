@@ -1,6 +1,8 @@
 # -*- coding: utf8 -*-
 import os
 
+pip3 install requests pycryptodome pytz
+
 from util import push_util
 from util import aes_help
 
