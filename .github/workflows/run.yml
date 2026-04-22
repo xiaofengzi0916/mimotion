@@ -1,39 +1,39 @@
-名称: 刷步数
+name: 刷步数
 
-开启:
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
 
-→ 每天9:00运行
-:
-
-:
-构建:
-运行于: ubuntu-latest
-超时分钟: 60
-步骤:
-      - 名称: 检出代码
-使用: actions/checkout@v5
-
-令牌: ${{ secrets.PAT }} #此处PAT需要申请，教程详见：README
-     - 
-: |
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.PAT }} #此处PAT需要申请，教程详见：README
+      - name: Update system and install zsh
+        run: |
           sudo -E apt-get -qq update
           sudo -E apt-get install zsh -y
           
       - name: 初始化Python
         uses: actions/setup-python@v6
-与:
+        with:
           python-version: "3.10"
           
       - name: 开始
         env:
             CONFIG: ${{ secrets.CONFIG }}
             AES_KEY: ${{ secrets.AES_KEY }}
-运行: |
+        run: |
           pip3 install requests pytz pycryptodome
           python3 main.py
 
       - name: persist tokens
-运行: |
+        run: |
           git config user.name github-actions
           git config user.email github-actions@users.noreply.github.com
           git add .
